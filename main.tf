@@ -4,7 +4,10 @@ provider "aws" {
 
 resource "aws_vpc" "test-vpc" {
   cidr_block = "10.0.0.0/16"
-  
+
+  tags = {
+    Name = "Premium Auto VPC"
+  }  
 }
 
 //Application Load Balancer
@@ -17,7 +20,8 @@ resource "aws_lb" "alb" {
 }
 
 resource "aws_launch_configuration" "cfg" {
-  
+
+  name = "premium_cfg"
   image_id = "ami-0f15e0a4c8d3ee5fe"
     instance_type = "t2.micro"
     key_name = "ec2"
@@ -33,6 +37,7 @@ resource "aws_launch_configuration" "cfg" {
 }
 
 resource "aws_autoscaling_group" "asg" {
+  name = "premium_asg"
   min_size = 1
   desired_capacity = 1
   max_size = 2

@@ -18,6 +18,10 @@ resource "aws_nat_gateway" "ngw" {
   connectivity_type = "private"
   count = length(var.private_subnet_cidrs)
   subnet_id = element(aws_subnet.private_subnet[*].id, count.index)
+
+  tags = {
+    "Name" = "Premium Auto ngw"
+  }
 }
 
 //Creating a route table and associating with igw
