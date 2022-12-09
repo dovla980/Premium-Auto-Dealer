@@ -1,32 +1,40 @@
 //Creating route table for private subnets
-resource "aws_route_table" "rt_ngw" {
-  vpc_id = aws_vpc.test-vpc.id
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.nginx_vpc.id
 
   tags = {
     Name = "Premium Auto private RT"
   }
 }
 
-resource "aws_route_table_association" "rt_asso_ngw" {
+resource "aws_route_table_association" "private_association" {
   count = length(var.private_subnet_cidrs)
-  subnet_id = element(aws_subnet.private_subnet[*].id, count.index)
-  route_table_id = aws_route_table.rt_ngw.id
+  subnet_id = aws_subnet.private_subnet[count.index].id
+  route_table_id = aws_route_table.private.id
+}
+
+resource "aws_eip" "nat_eip" {
+  count = 2
+  vpc = true
+  depends_on = [aws_internet_gateway.igw]
 }
 
 //Creating NAT
-resource "aws_nat_gateway" "ngw" {  
-  connectivity_type = "private"
-  count = length(var.private_subnet_cidrs)
-  subnet_id = element(aws_subnet.private_subnet[*].id, count.index)
-
+//TODO: chanage from private to public subnet
+//rename ngw to nat_gatewayn
+resource "aws_nat_gateway" "nat_gateway" {    
+  allocation_id = aws_eip.nat_eip[count.index].id  
+  count = length(var.public_subnet_cidrs)
+  //subnet_id = element(aws_subnet.private_subnet[*].id, count.index)
+  subnet_id = aws_subnet.public_subnet[count.index].id
   tags = {
     "Name" = "Premium Auto ngw"
   }
 }
 
 //Creating a route table and associating with igw
-resource "aws_route_table" "rt_igw" {
-  vpc_id = aws_vpc.test-vpc.id
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.nginx_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -38,17 +46,17 @@ resource "aws_route_table" "rt_igw" {
 }
 
 //Associating Public Subnets to the Route Table
-resource "aws_route_table_association" "rt_asso" {
+resource "aws_route_table_association" "public_association" {
   count = length(var.public_subnet_cidrs)
-  subnet_id = element(aws_subnet.public_subnet[*].id, count.index)
-  route_table_id = aws_route_table.rt_igw.id
+  subnet_id = aws_subnet.public_subnet[count.index].id
+  route_table_id = aws_route_table.public.id
 }
 
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.test-vpc.id
+  vpc_id = aws_vpc.nginx_vpc.id
 
   tags = {
-    Name = "Premium Auto igw"
+    Name = "Premium Auto internet gateway"
   }
 }
 

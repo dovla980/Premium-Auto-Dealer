@@ -1,21 +1,22 @@
 //Creating public and private subnets
 resource "aws_subnet" "public_subnet" {
-  vpc_id = aws_vpc.test-vpc.id
+  vpc_id = aws_vpc.nginx_vpc.id
   count = length(var.public_subnet_cidrs)
-  cidr_block = element(var.public_subnet_cidrs, count.index)
-  availability_zone = element(var.azs, count.index)
+  cidr_block = var.public_subnet_cidrs[count.index]
+  availability_zone = var.avail_zones[count.index]
 
   tags = {
-    Name = "Public Subnet ${count.index + 1}"
+    Name = "public Subnet ${count.index + 1}"
  }    
 }
 resource "aws_subnet" "private_subnet" {
-  vpc_id = aws_vpc.test-vpc.id
-  count = length(var.private_subnet_cidrs)
-  cidr_block = element(var.private_subnet_cidrs, count.index)
-  availability_zone = element(var.azs, count.index)
+  vpc_id = aws_vpc.nginx_vpc.id
+  count = length(var.private_subnet_cidrs)  
+  cidr_block = var.private_subnet_cidrs[count.index]
+  availability_zone = var.avail_zones[count.index]
 
   tags = {
-    Name = "Private Subnet ${count.index + 1}"
+    Name = "private Subnet ${count.index + 1}"
  }    
 }
+

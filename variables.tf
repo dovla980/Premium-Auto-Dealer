@@ -7,7 +7,8 @@ variable "private_subnet_cidrs" {
  default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
-variable "azs" {
+variable "avail_zones" {
   type = list(string)
   default = ["eu-west-3a","eu-west-3b"]
 }
+
