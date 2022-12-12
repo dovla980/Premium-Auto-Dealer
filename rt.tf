@@ -1,9 +1,9 @@
 //Creating route table for private subnets
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.nginx_vpc.id
-
+  
   tags = {
-    Name = "Private route table association"
+    Name = "Private route table"
   }
 }
 
@@ -22,7 +22,7 @@ resource "aws_eip" "nat_eip" {
 
 //Creating NAT
 //TODO: chanage from private to public subnet
-//rename ngw to nat_gatewayn
+//rename ngw to nat_gateway
 resource "aws_nat_gateway" "nat_gateway" {    
   allocation_id = aws_eip.nat_eip[count.index].id  
   count = length(var.public_subnet_cidrs)
