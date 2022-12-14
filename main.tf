@@ -22,7 +22,7 @@ resource "aws_vpc" "premium_auto_vpc" {
 resource "aws_lb" "app_lb" {
   name = "nginx-load-balancer"
   load_balancer_type = "application"
-  security_groups = [aws_security_group.sg_lb.id]
+  security_groups = [aws_security_group.app_lb.id]
   subnets = aws_subnet.public_subnet.*.id
   enable_cross_zone_load_balancing = true  
 }
@@ -53,7 +53,7 @@ resource "aws_launch_configuration" "nginx_config" {
   image_id = "ami-0f15e0a4c8d3ee5fe"
   instance_type = "t3.micro"
   key_name = "ec2"
-  security_groups = [aws_security_group.sg_ec2.id]    
+  security_groups = [aws_security_group.nginx_ec2.id]    
     user_data = <<EOF
                 #!/bin/bash
             sudo yum update -y

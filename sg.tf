@@ -1,4 +1,4 @@
-resource "aws_security_group" "sg_lb" {
+resource "aws_security_group" "app_lb" {
   vpc_id = aws_vpc.premium_auto_vpc.id
 
   ingress {
@@ -26,7 +26,7 @@ resource "aws_security_group" "sg_lb" {
   }
 }
 
-resource "aws_security_group" "sg_ec2" {
+resource "aws_security_group" "nginx_ec2" {
   vpc_id = aws_vpc.premium_auto_vpc.id
   
   ingress {
@@ -34,7 +34,7 @@ resource "aws_security_group" "sg_ec2" {
     to_port = 80    
     protocol = "tcp"
     security_groups = [
-      aws_security_group.sg_lb.id
+      aws_security_group.app_lb.id
     ]    
   }
   
