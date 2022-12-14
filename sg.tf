@@ -1,6 +1,5 @@
-//security group for load balancer
 resource "aws_security_group" "sg_lb" {
-  vpc_id = aws_vpc.nginx_vpc.id
+  vpc_id = aws_vpc.premium_auto_vpc.id
 
   ingress {
     from_port = 80
@@ -27,12 +26,17 @@ resource "aws_security_group" "sg_lb" {
   }
 }
 
-//security group for ec2 instances
-//TODO delete everything except 22
-//add inbound rule from application load balancer
 resource "aws_security_group" "sg_ec2" {
-  vpc_id = aws_vpc.nginx_vpc.id
-
+  vpc_id = aws_vpc.premium_auto_vpc.id
+  
+  ingress {
+    from_port = 80    
+    to_port = 80    
+    protocol = "tcp"
+    security_groups = [
+      aws_security_group.sg_lb.id
+    ]    
+  }
   
   ingress {
     from_port = 22
