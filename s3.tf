@@ -1,8 +1,8 @@
-
 resource "aws_s3_bucket" "alb_access_logs" {  
   bucket = "s3-bucket-logs-test-one"
   force_destroy = true
 }
+
 resource "aws_s3_bucket_policy" "s3_bucket_policy" {
   bucket = aws_s3_bucket.alb_access_logs.id
 
