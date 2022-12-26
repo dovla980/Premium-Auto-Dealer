@@ -25,6 +25,12 @@ resource "aws_lb" "app_lb" {
   security_groups = [aws_security_group.app_lb.id]
   subnets = aws_subnet.public_subnet.*.id
   enable_cross_zone_load_balancing = true  
+
+  access_logs {
+    bucket = "s3-bucket-logs-test-one"
+    prefix = "alb"
+    enabled = true
+  }  
 }
 
 resource "aws_lb_target_group" "nginx" {
