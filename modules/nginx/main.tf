@@ -5,9 +5,12 @@ provider "aws" {
 resource "aws_vpc" "premium_auto_vpc" {
   cidr_block = "10.0.0.0/16"
   
-  tags = {
-    Name = var.resource_tags["vpc_name"]
-  }  
+  tags = merge(
+    var.tags,  
+    {
+      Name = "Premium Auto VPC"
+    },
+  )  
 }
 
 resource "aws_lb" "app_lb" {
@@ -40,9 +43,12 @@ resource "aws_lb_listener" "listener_http" {
     target_group_arn = aws_lb_target_group.nginx.arn
     type = "forward"
   }
-  tags = {
-    "Name" = var.resource_tags["listener_name"]
-  }
+  tags = merge(
+    var.tags,  
+    {
+      Name = "HTTP Listener"
+    },
+  )  
 }
 
 resource "aws_launch_configuration" "nginx_config" {

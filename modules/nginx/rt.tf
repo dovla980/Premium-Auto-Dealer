@@ -5,9 +5,12 @@ resource "aws_route_table" "private" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_nat_gateway.nat_gateway[count.index].id
   }
-  tags = {
-    Name = "Private route table ${count.index + 1}"
-  }
+  tags = merge(
+    var.tags,  
+    {
+      Name = "Private route table ${count.index + 1}"
+    },
+  )  
 }
 
 resource "aws_route_table_association" "private_association" {
@@ -25,9 +28,13 @@ resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.nat_eip[count.index].id  
   count = length(aws_subnet.public_subnet)  
   subnet_id = aws_subnet.public_subnet[count.index].id
-  tags = {
-    Name = "Nginx nat gateway ${count.index + 1}"
-  }
+  
+  tags = merge(
+    var.tags,  
+    {
+      Name = "Nginx nat gateway ${count.index + 1}"
+    },
+  )  
 }
 
 resource "aws_route_table" "public" {
@@ -36,9 +43,12 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
-  tags = {
-    Name = var.resource_tags["public_rt"]
-  }
+  tags = merge(
+    var.tags,  
+    {
+      Name = "Public route table"
+    },
+  )  
 }
 
 resource "aws_route_table_association" "public_association" {
@@ -49,9 +59,12 @@ resource "aws_route_table_association" "public_association" {
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.premium_auto_vpc.id
-
-  tags = {
-    Name = var.resource_tags["igw"]
-  }
+  
+  tags = merge(
+    var.tags,  
+    {
+      Name = "Nginx internet gateway"
+    },
+  )  
 }
 

@@ -13,28 +13,19 @@ variable "avail_zones" {
 }
 
 variable "instance_type" {
-  type = string
-  default = "t3.micro"
+  type = string  
 }
 
 variable "aws_region" {
-  type = string    
-  default = "eu-west-3"
+  type = string      
 }
 
-variable "resource_tags" {
-  type = map(string)
-  default = {
-    "vpc_name" = "Premium Auto VPC"
-    "listener_name" = "HTTP Listener"
-    "public_rt" = "Public route table"
-    "igw" = "Nginx internet gateway"
-    "alb_sg" = "Load Balancer Security group"
-  }
+variable "tags" {
+  type = map(string)  
 }
 
 variable "application_name" {
   type = string
-  default = "nginx"
+  
 }
 

@@ -9,4 +9,10 @@ terraform {
 
 module "nginx" {
   source = "./modules/nginx"  
+  instance_type = "t3.micro"
+  aws_region = "eu-west-3"
+  tags = {
+    "Provider" = "Terraform"
+  }
+  application_name = "nginx"
 }
