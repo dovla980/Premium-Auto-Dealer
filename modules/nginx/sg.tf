@@ -22,7 +22,7 @@ resource "aws_security_group" "app_lb" {
   }
 
   tags = {
-    "Name" = "Load Balancer Security group"
+    "Name" = var.resource_tags["alb_sg"]
   }
 }
 
@@ -52,6 +52,6 @@ resource "aws_security_group" "nginx_ec2" {
   }
 
   tags = {
-    "Name" = "EC2 Security group"
+    "Name" = "${var.application_name}_sg"
   }
 }

@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "alb_access_logs" {  
-  bucket = "s3-bucket-logs-test-one"
+  bucket = "${var.application_name}-app-lb-access-logs"
   force_destroy = true
 }
 
@@ -16,7 +16,7 @@ resource "aws_s3_bucket_policy" "s3_bucket_policy" {
         "AWS": "arn:aws:iam::009996457667:root"
       },
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::s3-bucket-logs-test-one/alb/*"
+      "Resource": "arn:aws:s3:::nginx-app-lb-access-logs/alb/*"
     }
   ]
 }

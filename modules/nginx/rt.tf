@@ -37,7 +37,7 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = "Public route table"
+    Name = var.resource_tags["public_rt"]
   }
 }
 
@@ -51,7 +51,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.premium_auto_vpc.id
 
   tags = {
-    Name = "Nginx internet gateway"
+    Name = var.resource_tags["igw"]
   }
 }
 
