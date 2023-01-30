@@ -21,9 +21,12 @@ resource "aws_security_group" "app_lb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    "Name" = "Load Balancer Security group"
-  }
+  tags = merge(
+    var.tags,  
+    {
+      Name = "Load Balancer Security group"
+    },
+  )
 }
 
 resource "aws_security_group" "nginx_ec2" {
@@ -51,7 +54,10 @@ resource "aws_security_group" "nginx_ec2" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    "Name" = "EC2 Security group"
-  }
+  tags = merge(
+    var.tags,  
+    {
+      Name = "${var.application_name}_sg"
+    },
+  )
 }

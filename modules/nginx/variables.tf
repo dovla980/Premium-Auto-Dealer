@@ -12,3 +12,20 @@ variable "avail_zones" {
   default = ["eu-west-3a","eu-west-3b"]
 }
 
+variable "instance_type" {
+  type = string  
+}
+
+variable "aws_region" {
+  type = string      
+}
+
+variable "tags" {
+  type = map(string)  
+}
+
+variable "application_name" {
+  type = string
+  
+}
+
